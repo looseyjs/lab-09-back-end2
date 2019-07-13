@@ -1,0 +1,19 @@
+{
+  "name": "lab-09-back-end2",
+  "version": "1.0.0",
+  "description": "Code Fellows Seattle 301d57 lab 6 back-end",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "pg": "^7.11.0",
+    "superagent": "^5.1.0"
+  }
+}
