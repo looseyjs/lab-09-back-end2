@@ -1,6 +1,6 @@
 # lab-09-back-end
 
-Code Fellows Seattle 301d57 lab 6 back-end
+Code Fellows Seattle 301d57 lab 9 back-end
 
 # Project Name
 
@@ -51,9 +51,20 @@ Estimate of time needed to complete: __2hr__
 
 Start time: 11:45 AM
 
-Finish time: 
+Finish time: 1pm
 
-Actual time needed to complete: 
+Actual time needed to complete: 1hr 15mins
+
+#### Number and name of feature: Caching
+
+Estimate of time needed to complete: __1hr__
+
+Start time: 3 PM
+
+Finish time: 4PM
+
+Actual time needed to complete: 1hr
+
 ## Credits and Collaborations
 
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->

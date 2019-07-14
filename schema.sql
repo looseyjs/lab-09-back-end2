@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS weathers;
 DROP TABLE IF EXISTS locations;
+DROP TABLE IF EXISTS events;
 
 CREATE TABLE IF NOT EXISTS locations (
   id SERIAL PRIMARY KEY,
@@ -14,6 +15,16 @@ CREATE TABLE IF NOT EXISTS weathers (
   created_at BIGINT,
   forecast VARCHAR(255),
   time VARCHAR(255),
+  location_id INTEGER NOT NULL,
+  FOREIGN KEY (location_id) REFERENCES locations (id)
+);
+
+CREATE TABLE IF NOT EXISTS events (
+  id SERIAL PRIMARY KEY,
+  link VARCHAR(255),
+  name VARCHAR(255),
+  event_date DATE,
+  summary VARCHAR(255),
   location_id INTEGER NOT NULL,
   FOREIGN KEY (location_id) REFERENCES locations (id)
 );
