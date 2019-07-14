@@ -25,6 +25,7 @@ client.on('error', err => console.error(err));
 app.get('/location', getLocation);
 app.get('/weather', getWeather);
 app.get('/events', getEvents);
+app.get('/movies', getMovies);
 
 // Make sure the server is listening for requests
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
@@ -109,6 +110,7 @@ Weather.prototype = {
 };
 
 function Event(event) {
+  this.created_at = Date.now();
   this.tableName = 'events';
   this.link = event.url;
   this.name = event.name.text;
@@ -121,13 +123,37 @@ Event.lookup = lookup;
 
 Event.prototype = {
   save: function (location_id) {
-    const SQL = `INSERT INTO ${this.tableName} (link, name, event_date, summary, location_id) VALUES ($1, $2, $3, $4, $5);`;
-    const values = [this.link, this.name, this.event_date, this.summary, location_id];
+    const SQL = `INSERT INTO ${this.tableName} (created_at, link, name, event_date, summary, location_id) VALUES ($1, $2, $3, $4, $5, $6);`;
+    const values = [this.created_at, this.link, this.name, this.event_date, this.summary, location_id];
 
     client.query(SQL, values);
   }
 };
 
+function Movies(movies) {
+  this.created_at = Date.now();
+  this.tableName = 'movies';
+  this.title = movies.title;
+  this.overview = movies.overview;
+  this.average_votes = movies.vote_average;
+  this.total_votes = movies.vote_count;
+  this.image_url = 'https://image.tmdb.org/t/p/w500' + movies.poster_path;
+  this.popularity = movies.popularity;
+  this.released_on = movies.release_date;
+}
+
+Movies.tableName = 'movies';
+Movies.lookup = lookup;
+
+Movies.prototype = {
+  save: function (location_id) {
+    const SQL = `INSERT INTO ${this.tableName} (created_at, title, overview, average_votes, total_votes, image_url, popularity, released_on, location_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`;
+
+    const values = [this.created_at, this.title, this.overview, this.average_votes, this.total_votes, this.image_url, this.popularity, this.released_on, location_id];
+
+    client.query(SQL, values);
+  }
+};
 
 function getLocation(request, response) {
   Location.lookupLocation({
@@ -196,7 +222,13 @@ function getEvents(request, response) {
 
     location: request.query.data.id,
 
-    cacheHit: function (result) {
+    cacheHit: function (result, cacheMiss) {
+      //check ms
+      const timeOut = 86400000;
+      const age = Date.now() - result.rows[0].created_at;
+      if(age > timeOut) {
+        client.query('DELETE from events WHERE location_id=$1', [result.rows[0].location_id]).then(() => cacheMiss());
+      }
       response.send(result.rows);
     },
 
@@ -215,5 +247,38 @@ function getEvents(request, response) {
         })
         .catch(error => handleError(error, response));
     }
+  });
+}
+
+function getMovies(request, response) {
+  Movies.lookup({
+    tableName: Movies.tableName,
+    location: request.query.data.id,
+
+    cacheHit: function (result, cacheMiss) {
+      //check ms
+      const timeOut = 86400000;
+      const age = Date.now() - result.rows[0].created_at;
+      if(age > timeOut) {
+        client.query('DELETE from events WHERE location_id=$1', [result.rows[0].location_id]).then(() => cacheMiss());
+      }
+      response.send(result.rows);
+    },
+    cacheMiss: function () {
+      const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${request.query.data.search_query}&page=1&include_adult=false`;
+
+      superagent.get(url)
+        .then(result => {
+          const movieSummaries = result.body.results.map(movieData => {
+            const newMovie = new Movies(movieData);
+            newMovie.save(request.query.data.id);
+            return newMovie;
+
+          });
+          response.send(movieSummaries);
+        })
+        .catch(error => handleError(error, response));
+    }
+
   });
 }
