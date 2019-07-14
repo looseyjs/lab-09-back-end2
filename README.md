@@ -45,7 +45,7 @@ Finish time: 11:30
 
 Actual time needed to complete: 2 hours
 
-#### Number and name of feature: Yelp
+#### Number and name of feature: Events, Yelp
 
 Estimate of time needed to complete: __2hr__
 
@@ -61,9 +61,9 @@ Estimate of time needed to complete: __1hr__
 
 Start time: 3 PM
 
-Finish time: 4PM
+Finish time: 4PM, but most of Saturday to get the rest working
 
-Actual time needed to complete: 1hr
+Actual time needed to complete: 5hsr
 
 ## Credits and Collaborations
 
