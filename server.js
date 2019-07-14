@@ -26,10 +26,10 @@ app.get('/location', getLocation);
 app.get('/weather', getWeather);
 app.get('/events', getEvents);
 app.get('/movies', getMovies);
+app.get('/yelp', getYelp);
 
 // Make sure the server is listening for requests
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
-
 
 // Error handler
 function handleError(err, res) {
@@ -150,6 +150,29 @@ Movies.prototype = {
     const SQL = `INSERT INTO ${this.tableName} (created_at, title, overview, average_votes, total_votes, image_url, popularity, released_on, location_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`;
 
     const values = [this.created_at, this.title, this.overview, this.average_votes, this.total_votes, this.image_url, this.popularity, this.released_on, location_id];
+
+    client.query(SQL, values);
+  }
+};
+
+function Restaurant(restaurant) {
+  this.created_at = Date.now();
+  this.tableName = 'restaurants';
+  this.name = restaurant.name;
+  this.image_url = restaurant.image_url;
+  this.price = restaurant.price;
+  this.rating = restaurant.rating;
+  this.url = restaurant.url;
+}
+
+Restaurant.tableName = 'restaurants';
+Restaurant.lookup = lookup;
+
+Restaurant.prototype = {
+  save: function (location_id) {
+    const SQL = `INSERT INTO ${this.tableName} (created_at, name, image_url, price, rating, url, location_id) VALUES ($1, $2, $3, $4, $5, $6, $7);`;
+
+    const values = [this.created_at, this.name, this.image_url, this.price, this.rating, this.url, location_id];
 
     client.query(SQL, values);
   }
@@ -276,6 +299,41 @@ function getMovies(request, response) {
 
           });
           response.send(movieSummaries);
+        })
+        .catch(error => handleError(error, response));
+    }
+
+  });
+}
+
+function getYelp(request, response) {
+  Restaurant.lookup({
+    tableName: Restaurant.tableName,
+    location: request.query.data.id,
+
+    cacheHit: function (result, cacheMiss) {
+      //check ms
+      const timeOut = 86400000;
+      const age = Date.now() - result.rows[0].created_at;
+      if(age > timeOut) {
+        client.query('DELETE FROM weathers WHERE location_id=$1', [result.rows[0].location_id])
+          .then(() => cacheMiss());
+      } else {
+        response.send(result.rows);
+      }
+    },
+    cacheMiss: function () {
+      const url = `https://api.yelp.com/v3/businesses/search?location=${request.query.data.search_query}`;
+
+      superagent.get(url)
+        .set('Authorization', `Bearer ${process.env.YELP_API_KEY}`)
+        .then(result => {
+          const restaurantData = result.body.businesses.map(restaurantData => {
+            const restaurant = new Restaurant(restaurantData);
+            restaurant.save(request.query.data.id);
+            return restaurant;
+          });
+          response.send(restaurantData);
         })
         .catch(error => handleError(error, response));
     }

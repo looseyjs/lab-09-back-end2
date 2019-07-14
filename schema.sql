@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS weathers;
 DROP TABLE IF EXISTS locations;
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS movies;
+DROP TABLE IF EXISTS restaurants;
 
 CREATE TABLE IF NOT EXISTS locations (
   id SERIAL PRIMARY KEY,
@@ -44,3 +45,14 @@ CREATE TABLE IF NOT EXISTS movies (
   location_id INTEGER NOT NULL,
   FOREIGN KEY (location_id) REFERENCES locations (id)
 );
+
+CREATE TABLE IF NOT EXISTS restaurants (
+  id SERIAL PRIMARY KEY,
+  created_at BIGINT,
+  name VARCHAR(255),
+  image_url VARCHAR(255),
+  price NUMERIC(10, 7),
+  url VARCHAR(255),
+  location_id INTEGER NOT NULL,
+  FOREIGN KEY (location_id) REFERENCES locations (id)
+)
