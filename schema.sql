@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS restaurants (
   name VARCHAR(255),
   image_url VARCHAR(255),
   price NUMERIC(10, 7),
+  rating NUMERIC(10,7),
   url VARCHAR(255),
   location_id INTEGER NOT NULL,
   FOREIGN KEY (location_id) REFERENCES locations (id)
