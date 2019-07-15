@@ -4,46 +4,37 @@ Code Fellows Seattle 301d57 lab 9 back-end
 
 # Project Name
 
-**Author**: Padma and Bomibear.
+**Author**: Padma and Bomibear
 **Version**: 1.0.10
-<!-- (increment the patch/fix version number if you make more commits past your first submission) -->
 
 ## Overview
 
-<!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
-
-To create an app that allows a user to enter a city name and view some relevant information about its location, events, weather, etc...
+This app allows a user to search for a city, and see the weather forecast, a list of restaurants in the area, events happening, and a list of movies with the name of the city in the title.
 
 ## Getting Started
 
-## <!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
-
-A user will have to run npm init, start a server on their local instance by typing nodemon, open City Exploreer Website, Enter a city name.
+A user will have to run npm init, start a server on their local instance by typing nodemon, open [City Exploreer Website](https://codefellows.github.io/code-301-guide/curriculum/city-explorer-app/front-end/), Enter a city name. This will run it locally.  The deployed link [here](https://citylookup4.herokuapp.com)
 
 ## Architecture
 
-<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
-
-This application is built with JavaScript, Node.js, Express, Heroku,
+This application is built with JavaScript, Node.js, Express, SuperAgent and the deployed link is hosted on Heroku.
 
 ## Change Log
+07-13-2019 6:30pm - Restaurants are now saved to a postgres db.  Caching works correctly for weather, restuarants, events, and movies.
 
-<!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
+07-12-2019 1:30pm - Application has resturants, events and movies listing properly.
 
-01-01-2001 4:59pm - Application now has a fully-functional express server, with a GET route for the location resource.
-
--->
 ## Features
 
 #### Number and name of feature: Movies
 
-Estimate of time needed to complete: __1hr__
+Estimate of time needed to complete: __2hr__
 
 Start time: 9:30 AM
 
-Finish time: 11:30
+Finish time: 1:30 pm
 
-Actual time needed to complete: 2 hours
+Actual time needed to complete: 4 hours
 
 #### Number and name of feature: Events, Yelp
 
@@ -51,9 +42,9 @@ Estimate of time needed to complete: __2hr__
 
 Start time: 11:45 AM
 
-Finish time: 1pm
+Finish time: 1:30pm
 
-Actual time needed to complete: 1hr 15mins
+Actual time needed to complete: 1hr 45mins
 
 #### Number and name of feature: Caching
 
@@ -63,7 +54,7 @@ Start time: 3 PM
 
 Finish time: 4PM, but most of Saturday to get the rest working
 
-Actual time needed to complete: 5hsr
+Actual time needed to complete: 6hr
 
 ## Credits and Collaborations
 
@@ -75,6 +66,6 @@ Melfi Perez
 Roman Gebrehiwot
 Manish KC
 Jane Hur
-
+Padma
 
 
