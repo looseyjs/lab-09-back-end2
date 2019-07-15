@@ -12,7 +12,7 @@ require('dotenv').config();
 // Application Setup
 const app = express();
 const PORT = process.env.PORT || 3000;
-const timeoutObj = {'weathers': 15000};
+const timeoutObj = { 'weathers': 15000 };
 
 app.use(cors());
 
@@ -65,7 +65,7 @@ function Location(query, res) {
 Location.lookupLocation = (location) => {
   const SQL = 'SELECT * FROM locations WHERE search_query=$1;';
   const values = [location.query];
-
+  console.log(SQL, values);
   return client.query(SQL, values)
     .then(result => {
       if (result.rowCount > 0) {
@@ -185,6 +185,7 @@ function getLocation(request, response) {
     query: request.query.data,
 
     cacheHit: function (result) {
+      console.log('getting location  from db');
       response.send(result.rows[0]);
     },
 
@@ -194,6 +195,7 @@ function getLocation(request, response) {
       return superagent.get(url)
         .then(result => {
           const location = new Location(this.query, result);
+          console.log('Saving to DB----');
           location.save()
             .then(location => response.send(location));
         })
@@ -212,7 +214,7 @@ function getWeather(request, response) {
       // Check ms since last cached
       const timeOut = timeoutObj['weathers'];
       const age = Date.now() - result.rows[0].created_at; // compare against now
-      console.log('age:',age);
+      console.log('age:', age);
 
       if (age > timeOut) {
         client.query('DELETE FROM weathers WHERE location_id=$1', [result.rows[0].location_id])
@@ -249,7 +251,7 @@ function getEvents(request, response) {
       //check ms
       const timeOut = 86400000;
       const age = Date.now() - result.rows[0].created_at;
-      if(age > timeOut) {
+      if (age > timeOut) {
         client.query('DELETE from events WHERE location_id=$1', [result.rows[0].location_id]).then(() => cacheMiss());
       }
       response.send(result.rows);
@@ -282,8 +284,8 @@ function getMovies(request, response) {
       //check ms
       const timeOut = 86400000;
       const age = Date.now() - result.rows[0].created_at;
-      if(age > timeOut) {
-        client.query('DELETE from events WHERE location_id=$1', [result.rows[0].location_id]).then(() => cacheMiss());
+      if (age > timeOut) {
+        client.query('DELETE from movies WHERE location_id=$1', [result.rows[0].location_id]).then(() => cacheMiss());
       }
       response.send(result.rows);
     },
@@ -315,8 +317,8 @@ function getYelp(request, response) {
       //check ms
       const timeOut = 86400000;
       const age = Date.now() - result.rows[0].created_at;
-      if(age > timeOut) {
-        client.query('DELETE FROM weathers WHERE location_id=$1', [result.rows[0].location_id])
+      if (age > timeOut) {
+        client.query('DELETE FROM restaurants WHERE location_id=$1', [result.rows[0].location_id])
           .then(() => cacheMiss());
       } else {
         response.send(result.rows);
