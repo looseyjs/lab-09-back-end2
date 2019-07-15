@@ -13,7 +13,7 @@ This app allows a user to search for a city, and see the weather forecast, a lis
 
 ## Getting Started
 
-A user will have to run npm init, start a server on their local instance by typing nodemon, open [City Exploreer Website](https://codefellows.github.io/code-301-guide/curriculum/city-explorer-app/front-end/), Enter a city name. This will run it locally.  The deployed link [here](https://citylookup4.herokuapp.com)
+To run this locally, a user will have to run ```npm init```, then start a server on their local instance by typing ````nodemon```, open the [city explorer website](https://codefellows.github.io/code-301-guide/curriculum/city-explorer-app/front-end/), and enter a city name. The deployed link [here](https://citylookup4.herokuapp.com)
 
 ## Architecture
 
