@@ -15,5 +15,14 @@
     "express": "^4.17.1",
     "pg": "^7.11.0",
     "superagent": "^5.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/looseyjs/lab-09-back-end2.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/looseyjs/lab-09-back-end2/issues"
+  },
+  "homepage": "https://github.com/looseyjs/lab-09-back-end2#readme"
 }
