@@ -1,11 +1,11 @@
-# lab-09-back-end
+# lab-09-back-end2
 
 Code Fellows Seattle 301d57 lab 9 back-end
 
 # Project Name
 
-**Author**: Padma and Bomibear
-**Version**: 1.0.10
+**Author**: [Padma](https://github.com/gpadmapriya) and [BomiBear](https://github.com/bomibear)
+**Version**: 1.0.20
 
 ## Overview
 
